@@ -1,10 +1,13 @@
 function [] = regresionCuadratica()
+clear all
+close all
+clc
 format long
 x = [0:0.1:5];
 x1 = [0.01:0.1:5 + 0.01];
 ruido = 0.1*randn(1,length(x));
-y = x.^3;
-y1 = x1.^3;
+y = x.^2;
+y1 = x1.^2;
 yruido = y + ruido;
 y1ruido = y1 + ruido;
 [yruidonormalizado,configuracion] = mapminmax(yruido);
@@ -48,18 +51,21 @@ model = svmtrain(ynormalizado',x',streamAux);
 [Prediccion, accuracy, dec_values] = svmpredict(y1normalizado', x1',model);
 errorPrediccion = sqrt(sum(abs(Prediccion - y1normalizado')));
 Prediccionrecuperada = mapminmax('reverse',Prediccion,configuracion2);
- error = sqrt(sum(abs(y1normalizado - Prediccion')))
- errorRecuperado = sqrt(sum(abs(y1 - Prediccionrecuperada')))
- 
+error = sqrt(sum(abs(y1normalizado - Prediccion')))
+errorRecuperado = sqrt(sum(abs(y1 - Prediccionrecuperada')))
+factorDePenalidad = c(filaMSE(1))
+sigma = num2str(g(columnaMSE(1)))
 stem(x,predicted_label,'o')
 hold on
 stem(x,ynormalizado,'k','*')
-% stem(x,yruidonormalizado,'g','^')
+title('Resultado de la regresión empleando mismo eje')
 figure
+title('Regresion empleando diferente eje - Generalización')
 stem(x1,y1normalizado,'k','*')
 hold on
 stem(x1,Prediccion,'g','^')
 figure
+title('Regresion empleando diferente eje Sin Normalizar - Generalización')
 stem(x1,y1)
 hold on
 stem(x1,Prediccionrecuperada,'r')
